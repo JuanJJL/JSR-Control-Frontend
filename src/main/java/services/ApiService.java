@@ -1,45 +1,128 @@
 package services;
+
 import models.LoginRequest;
 import models.TokenResponse;
-import models.User;
+import models.user.User;
+import models.user.UserUpdate;
 import retrofit2.Call;
 import retrofit2.http.*;
 import java.util.List;
-
+import models.user.UserCreate;
+import models.products.*;
+import models.clients.Client;
+import models.clients.ClientCreate;
+import models.clients.ClientUpdate;
 
 public interface ApiService {
 
-    @POST("auth/login")
-    Call<TokenResponse> login(@Body LoginRequest credentials);
+        @POST("auth/login")
+        Call<TokenResponse> login(@Body LoginRequest credentials);
 
+        @GET("users")
+        Call<List<User>> getUsers(@Header("Authorization") String token);
 
-    @GET("users")
-    Call<User> getUsers(@Header("Authorization") String token);
+        @POST("users/create")
+        Call<Void> createUser(
+                        @Header("Authorization") String token,
+                        @Body UserCreate user);
 
-    @FormUrlEncoded
-    @POST("users/create")
-    Call<Void> createUser(
-            @Header("Authorization") String token,
-            @Field("username") String username,
-            @Field("password") String password,
-            @Field("role_id") int role_id
-    );
+        @DELETE("users/delete/{user_id}")
+        Call<Void> deleteUser(
+                        @Header("Authorization") String token,
+                        @Path("user_id") int user_id);
 
-    @DELETE("users/delete/{user_id}")
-    Call<Void>  deleteuser(
-            @Header("Authorization") String token,
-            @Path("user_id") int user_id
-    );
+        @Headers("Content-Type: application/json")
+        @PUT("users/update/{user_id}")
+        Call<Void> updateUser(
+                        @Path("user_id") int userId,
+                        @Body UserUpdate data);
 
-    @FormUrlEncoded
-    @PUT("user/update/{user_id}")
-    Call<Void> updateUser(
-            @Header("Authorization") String token,
-            @Path("user_id") int user_id,
-            @Field("username") String username,
-            @Field("role_id") int role_id
-    );
+        // ========== PRODUCTS ==========
 
+        @Headers("Content-Type: application/json")
+        @GET("products/")
+        Call<List<Product>> getAllProducts(@Header("Authorization") String token);
 
+        @Headers("Content-Type: application/json")
+        @GET("products/{product_id}")
+        Call<Product> getProductById(
+                        @Header("Authorization") String token,
+                        @Path("product_id") int productId);
+
+        @Headers("Content-Type: application/json")
+        @POST("products/create")
+        Call<Product> createProduct(
+                        @Header("Authorization") String token,
+                        @Body ProductCreate data);
+
+        @Headers("Content-Type: application/json")
+        @PUT("products/update/{product_id}")
+        Call<Product> updateProduct(
+                        @Header("Authorization") String token,
+                        @Path("product_id") int productId,
+                        @Body ProductUpdate data);
+
+        @DELETE("products/delete/{product_id}")
+        Call<Void> deleteProduct(
+                        @Header("Authorization") String token,
+                        @Path("product_id") int productId);
+
+        // ========== PRODUCT CATEGORIES ==========
+
+        @GET("products/categories")
+        Call<List<ProductCategory>> getAllCategories(@Header("Authorization") String token);
+
+        @GET("products/categories/{category_id}")
+        Call<ProductCategory> getCategoryById(
+                        @Header("Authorization") String token,
+                        @Path("category_id") int categoryId);
+
+        @Headers("Content-Type: application/json")
+        @POST("products/categories/create")
+        Call<ProductCategory> createCategory(
+                        @Header("Authorization") String token,
+                        @Body ProductCategoryCreate data);
+
+        @Headers("Content-Type: application/json")
+        @PUT("products/categories/update/{category_id}")
+        Call<ProductCategory> updateCategory(
+                        @Header("Authorization") String token,
+                        @Path("category_id") int categoryId,
+                        @Body ProductCategoryCreate data);
+
+        @DELETE("products/categories/delete/{category_id}")
+        Call<Void> deleteCategory(
+                        @Header("Authorization") String token,
+                        @Path("category_id") int categoryId);
+
+        // ========== CLIENTS ==========
+
+        @Headers("Content-Type: application/json")
+        @GET("clients/")
+        Call<List<Client>> getAllClients(@Header("Authorization") String token);
+
+        @Headers("Content-Type: application/json")
+        @GET("clients/{client_id}")
+        Call<Client> getClientById(
+                        @Header("Authorization") String token,
+                        @Path("client_id") int clientId);
+
+        @Headers("Content-Type: application/json")
+        @POST("clients/create")
+        Call<Client> createClient(
+                        @Header("Authorization") String token,
+                        @Body ClientCreate data);
+
+        @Headers("Content-Type: application/json")
+        @PUT("clients/update/{client_id}")
+        Call<Client> updateClient(
+                        @Header("Authorization") String token,
+                        @Path("client_id") int clientId,
+                        @Body ClientUpdate data);
+
+        @DELETE("clients/delete/{client_id}")
+        Call<Void> deleteClient(
+                        @Header("Authorization") String token,
+                        @Path("client_id") int clientId);
 
 }

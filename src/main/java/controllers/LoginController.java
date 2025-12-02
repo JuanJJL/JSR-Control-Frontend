@@ -67,7 +67,7 @@ public class LoginController {
 
                             // Cambiar a la pantalla de CRUD
                             try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/user_crud.fxml"));
+                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main_menu.fxml"));
                                 Parent root = loader.load();
 
                                 Stage stage = (Stage) username_field.getScene().getWindow();

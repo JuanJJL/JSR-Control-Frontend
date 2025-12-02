@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="650.0" prefWidth="1000.0"
+            xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.ProductController">
+
+    <!-- TOP BAR -->
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0"
+              style="-fx-background-color: #a9cec2;"
+              BorderPane.alignment="CENTER">
+            <children>
+                <Label text="PRODUCT MANAGEMENT SYSTEM"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;">
+                    <HBox.margin>
+                        <Insets left="15.0" />
+                    </HBox.margin>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="btn_back" mnemonicParsing="false" text="BACK"
+                        onAction="#handleBack"
+                        style="-fx-background-color: #2F4F4F; -fx-text-fill: white; -fx-padding: 5 15 5 15;">
+                    <HBox.margin>
+                        <Insets right="15.0" />
+                    </HBox.margin>
+                </Button>
+            </children>
+        </HBox>
+    </top>
+
+    <!-- CENTER CONTENT -->
+    <center>
+        <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #2F3640;">
+
+            <!-- LEFT PANEL: FORM -->
+            <VBox prefWidth="350.0" minWidth="350.0" style="-fx-background-color: #3B444C;">
+                <padding>
+                    <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+                </padding>
+
+                <Label text="+ ADD NEW PRODUCT"
+                       style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #A9B7C6;"/>
+                <Separator style="-fx-background-color: #6C7A89;">
+                    <VBox.margin>
+                        <Insets top="5.0" bottom="15.0"/>
+                    </VBox.margin>
+                </Separator>
+
+                <!-- Product Name -->
+                <Label text="Product Name:" style="-fx-text-fill: #A9B7C6;"/>
+                <TextField fx:id="txt_name" promptText="Enter product name"
+                           style="-fx-background-color: #555E67; -fx-text-fill: white; -fx-prompt-text-fill: #9AA7B7;"/>
+
+                <!-- Price -->
+                <Label text="Price:" style="-fx-text-fill: #A9B7C6;">
+                    <VBox.margin><Insets top="10.0"/></VBox.margin>
+                </Label>
+                <TextField fx:id="txt_price" promptText="Enter price"
+                           style="-fx-background-color: #555E67; -fx-text-fill: white; -fx-prompt-text-fill: #9AA7B7;"/>
+
+                <!-- Cost -->
+                <Label text="Cost:" style="-fx-text-fill: #A9B7C6;">
+                    <VBox.margin><Insets top="10.0"/></VBox.margin>
+                </Label>
+                <TextField fx:id="txt_cost" promptText="Enter cost"
+                           style="-fx-background-color: #555E67; -fx-text-fill: white; -fx-prompt-text-fill: #9AA7B7;"/>
+
+                <!-- Stock -->
+                <Label text="Stock:" style="-fx-text-fill: #A9B7C6;">
+                    <VBox.margin><Insets top="10.0"/></VBox.margin>
+                </Label>
+                <TextField fx:id="txt_stock" promptText="Enter stock quantity"
+                           style="-fx-background-color: #555E67; -fx-text-fill: white; -fx-prompt-text-fill: #9AA7B7;"/>
+
+                <!-- Category -->
+                <Label text="Category:" style="-fx-text-fill: #A9B7C6;">
+                    <VBox.margin><Insets top="10.0"/></VBox.margin>
+                </Label>
+                <ComboBox fx:id="cmb_category" prefWidth="300.0" promptText="Select category"
+                          style="-fx-background-color: #555E67; -fx-prompt-text-fill: #9AA7B7;"/>
+
+                <Region VBox.vgrow="ALWAYS" />
+
+                <!-- Create Button -->
+                <Button fx:id="btn_create" mnemonicParsing="false" text="CREATE PRODUCT"
+                        onAction="#handleCreateProduct" prefWidth="300.0"
+                        style="-fx-background-color: #008B8B; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;">
+                    <VBox.margin><Insets top="20.0"/></VBox.margin>
+                </Button>
+
+                <!-- Manage Categories Button -->
+                <Button fx:id="btn_manage_categories" mnemonicParsing="false" text="MANAGE CATEGORIES"
+                        onAction="#handleManageCategories" prefWidth="300.0"
+                        style="-fx-background-color: #6C7A89; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12px;">
+                    <VBox.margin><Insets top="10.0"/></VBox.margin>
+                </Button>
+            </VBox>
+
+            <!-- RIGHT PANEL: TABLE -->
+            <VBox HBox.hgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+
+                <Label text="PRODUCTS LIST"
+                       style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #A9B7C6;"/>
+                <Separator style="-fx-background-color: #6C7A89;">
+                    <VBox.margin>
+                        <Insets top="5.0" bottom="15.0"/>
+                    </VBox.margin>
+                </Separator>
+
+                <TableView fx:id="table_products" VBox.vgrow="ALWAYS"
+                           style="-fx-background-color: #3B444C;">
+                    <columns>
+                        <TableColumn fx:id="col_id" text="ID" prefWidth="50.0" />
+                        <TableColumn fx:id="col_name" text="Name" prefWidth="200.0" />
+                        <TableColumn fx:id="col_price" text="Price" prefWidth="100.0" />
+                        <TableColumn fx:id="col_cost" text="Cost" prefWidth="100.0" />
+                        <TableColumn fx:id="col_stock" text="Stock" prefWidth="80.0" />
+                        <TableColumn fx:id="col_category" text="Category" prefWidth="120.0" />
+                        <TableColumn fx:id="col_created_at" text="Created At" prefWidth="150.0" />
+                    </columns>
+                </TableView>
+
+                <!-- Action Buttons -->
+                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                    <VBox.margin><Insets top="15.0"/></VBox.margin>
+                    <Button fx:id="btn_update" mnemonicParsing="false" text="UPDATE"
+                            onAction="#handleUpdate"
+                            style="-fx-background-color: #79A3A8; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <Button fx:id="btn_delete" mnemonicParsing="false" text="DELETE"
+                            onAction="#handleDelete"
+                            style="-fx-background-color: #CD5C5C; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <Button fx:id="btn_refresh" mnemonicParsing="false" text="REFRESH LIST"
+                            onAction="#handleRefresh"
+                            style="-fx-background-color: #6C7A89; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                </HBox>
+            </VBox>
+        </HBox>
+    </center>
+</BorderPane>

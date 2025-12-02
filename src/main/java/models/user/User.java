@@ -1,4 +1,4 @@
-package models;
+package models.user;
 
 public class User {
     private int id;
@@ -86,5 +86,8 @@ public class User {
                 ", status=" + status +
                 '}';
     }
+
+
 }
+
 
