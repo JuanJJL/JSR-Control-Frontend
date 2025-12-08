@@ -71,8 +71,19 @@
                       GridPane.columnIndex="0" GridPane.rowIndex="1">
 
                     <Label text="👤" style="-fx-font-size: 48;"/>
-                    <Button fx:id="clientes_button" text="CRUD Clientes" onAction="#openSales"
+                    <Button fx:id="clientes_button" text="CRUD Clientes" onAction="#openClients"
                             style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 15 30; -fx-font-size: 14;"
+                            prefWidth="200"/>
+                </VBox>
+
+                <!-- Botón Ventas (NUEVO) -->
+                <VBox alignment="CENTER" spacing="10"
+                      style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);"
+                      GridPane.columnIndex="1" GridPane.rowIndex="1">
+
+                    <Label text="💰" style="-fx-font-size: 48;"/>
+                    <Button fx:id="ventas_button" text="Registro de Ventas" onAction="#openSales"
+                            style="-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 15 30; -fx-font-size: 14;"
                             prefWidth="200"/>
                 </VBox>
 

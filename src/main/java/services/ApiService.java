@@ -12,6 +12,7 @@ import models.products.*;
 import models.clients.Client;
 import models.clients.ClientCreate;
 import models.clients.ClientUpdate;
+import models.sales.*;
 
 public interface ApiService {
 
@@ -124,5 +125,52 @@ public interface ApiService {
         Call<Void> deleteClient(
                         @Header("Authorization") String token,
                         @Path("client_id") int clientId);
+
+
+        // ========== SALES RECORDS ==========
+
+        @Headers("Content-Type: application/json")
+        @GET("sales/")
+        Call<List<SalesRecord>> getAllSales(@Header("Authorization") String token);
+
+        @Headers("Content-Type: application/json")
+        @GET("sales/{sale_id}")
+        Call<SalesRecord> getSaleById(
+                @Header("Authorization") String token,
+                @Path("sale_id") int saleId
+        );
+
+        @Headers("Content-Type: application/json")
+        @POST("sales/create")
+        Call<SalesRecord> createSale(
+                @Header("Authorization") String token,
+                @Body SalesRecordCreate data
+        );
+
+        @DELETE("sales/delete/{sale_id}")
+        Call<Void> deleteSale(
+                @Header("Authorization") String token,
+                @Path("sale_id") int saleId
+        );
+
+        @Headers("Content-Type: application/json")
+        @GET("sales/client/{client_id}")
+        Call<List<SalesRecord>> getSalesByClient(
+                @Header("Authorization") String token,
+                @Path("client_id") int clientId
+        );
+
+        @Headers("Content-Type: application/json")
+        @GET("sales/product/{product_id}")
+        Call<List<SalesRecord>> getSalesByProduct(
+                @Header("Authorization") String token,
+                @Path("product_id") int productId
+        );
+
+// ========== PAYMENT METHODS ==========
+
+        @Headers("Content-Type: application/json")
+        @GET("payment_methods/")
+        Call<List<PaymentMethod>> getAllPaymentMethods(@Header("Authorization") String token);
 
 }

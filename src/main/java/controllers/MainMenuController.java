@@ -18,56 +18,43 @@ public class MainMenuController {
     private Button logout_button;
 
     @FXML
-    private Button sales_button;
+    private Button usuarios_button;
 
     @FXML
-    private Button expenses_button;
+    private Button productos_button;
 
     @FXML
-    private Button users_button;
+    private Button clientes_button;
 
     @FXML
-    private Button products_button;
-
-    @FXML
-    private Button reports_button;
+    private Button ventas_button;
 
     @FXML
     public void initialize() {
         // Show logged in user
         if (TokenManager.isLoggedIn()) {
-            username_label.setText("Welcome, " + TokenManager.getUsername());
+            username_label.setText("Bienvenido, " + TokenManager.getUsername());
         }
     }
 
     @FXML
     private void openSales() {
-        changeView("/views/client_crud.fxml", "Client Management", 1000, 650);
+        changeView("/views/sales_crud.fxml", "Registro de Ventas", 1200, 700);
     }
 
     @FXML
-    private void openExpenses() {
-        System.out.println("Opening Expenses...");
-        // TODO: changeView("/views/expenses.fxml", "Expenses", 900, 600);
+    private void openClients() {
+        changeView("/views/client_crud.fxml", "Gestión de Clientes", 1000, 650);
     }
-
-
 
     @FXML
     private void openUserCrud() {
-        changeView("/views/user_crud.fxml", "User Management", 950, 650);
+        changeView("/views/user_crud.fxml", "Gestión de Usuarios", 950, 650);
     }
 
     @FXML
     private void openProducts() {
-        changeView("/views/product_crud.fxml", "Product Management", 1000, 650);
-    }
-
-
-    @FXML
-    private void openReports() {
-        System.out.println("Opening Reports...");
-        // TODO: changeView("/views/reports.fxml", "Reports", 900, 600);
+        changeView("/views/product_crud.fxml", "Gestión de Productos", 1000, 650);
     }
 
     @FXML
