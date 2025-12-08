@@ -32,7 +32,7 @@ public interface ApiService {
                         @Header("Authorization") String token,
                         @Body UserCreate user);
 
-        @DELETE("users/delete/{user_id}")
+        @DELETE("users/{user_id}")
         Call<Void> deleteUser(
                         @Header("Authorization") String token,
                         @Path("user_id") int user_id);
@@ -40,6 +40,7 @@ public interface ApiService {
         @Headers("Content-Type: application/json")
         @PUT("users/update/{user_id}")
         Call<Void> updateUser(
+                        @Header("Authorization") String token,
                         @Path("user_id") int userId,
                         @Body UserUpdate data);
 

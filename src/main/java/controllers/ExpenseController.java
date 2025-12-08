@@ -173,11 +173,18 @@ public class ExpenseController {
                         cmb_category.setItems(category_list);
                         table_expenses.refresh();
                     });
+                } else {
+                    Platform.runLater(() -> {
+                        showAlert("Error", "Could not load expense categories", Alert.AlertType.ERROR);
+                    });
                 }
             }
 
             @Override
             public void onFailure(Call<List<ExpenseCategory>> call, Throwable t) {
+                Platform.runLater(() -> {
+                    showAlert("Error", "Connection error: " + t.getMessage(), Alert.AlertType.ERROR);
+                });
                 t.printStackTrace();
             }
         });
@@ -194,11 +201,18 @@ public class ExpenseController {
                         cmb_payment_method.setItems(payment_method_list);
                         table_expenses.refresh();
                     });
+                } else {
+                    Platform.runLater(() -> {
+                        showAlert("Error", "Could not load payment methods", Alert.AlertType.ERROR);
+                    });
                 }
             }
 
             @Override
             public void onFailure(Call<List<PaymentMethod>> call, Throwable t) {
+                Platform.runLater(() -> {
+                    showAlert("Error", "Connection error: " + t.getMessage(), Alert.AlertType.ERROR);
+                });
                 t.printStackTrace();
             }
         });
@@ -215,11 +229,18 @@ public class ExpenseController {
                         cmb_responsible.setItems(user_list);
                         table_expenses.refresh();
                     });
+                } else {
+                    Platform.runLater(() -> {
+                        showAlert("Error", "Could not load users", Alert.AlertType.ERROR);
+                    });
                 }
             }
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
+                Platform.runLater(() -> {
+                    showAlert("Error", "Connection error: " + t.getMessage(), Alert.AlertType.ERROR);
+                });
                 t.printStackTrace();
             }
         });
@@ -235,11 +256,18 @@ public class ExpenseController {
                         expense_list.setAll(response.body());
                         System.out.println("Expenses loaded: " + expense_list.size());
                     });
+                } else {
+                    Platform.runLater(() -> {
+                        showAlert("Error", "Could not load expenses", Alert.AlertType.ERROR);
+                    });
                 }
             }
 
             @Override
             public void onFailure(Call<List<ExpenseRecord>> call, Throwable t) {
+                Platform.runLater(() -> {
+                    showAlert("Error", "Connection error: " + t.getMessage(), Alert.AlertType.ERROR);
+                });
                 t.printStackTrace();
             }
         });
@@ -363,10 +391,15 @@ public class ExpenseController {
 
                                 @Override
                                 public void onFailure(Call<ExpenseRecord> call, Throwable t) {
+                                    Platform.runLater(() -> {
+                                        showAlert("Error", "Connection error: " + t.getMessage(), Alert.AlertType.ERROR);
+                                    });
+                                    t.printStackTrace();
                                 }
                             });
 
                 } catch (Exception e) {
+                    showAlert("Error", "Invalid data: " + e.getMessage(), Alert.AlertType.ERROR);
                 }
             }
         });
@@ -375,23 +408,42 @@ public class ExpenseController {
     @FXML
     private void handleDelete() {
         ExpenseRecord selected = table_expenses.getSelectionModel().getSelectedItem();
-        if (selected == null)
+        
+        if (selected == null) {
+            showAlert("Warning", "Select an expense from the table", Alert.AlertType.WARNING);
             return;
+        }
 
-        String token = "Bearer " + TokenManager.getToken();
-        RetrofitClient.getApiService().deleteExpenseRecord(token, selected.getId()).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                Platform.runLater(() -> {
-                    if (response.isSuccessful()) {
-                        loadExpenses();
-                        showAlert("Success", "Deleted", Alert.AlertType.INFORMATION);
+        // Confirm deletion
+        Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmation.setTitle("Confirm deletion");
+        confirmation.setHeaderText("Are you sure you want to delete this expense?");
+        confirmation.setContentText("Description: " + selected.getDescription());
+
+        confirmation.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                String token = "Bearer " + TokenManager.getToken();
+                RetrofitClient.getApiService().deleteExpenseRecord(token, selected.getId()).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Platform.runLater(() -> {
+                            if (response.isSuccessful()) {
+                                showAlert("Success", "Expense deleted successfully", Alert.AlertType.INFORMATION);
+                                loadExpenses();
+                            } else {
+                                showAlert("Error", "Could not delete. Code: " + response.code(), Alert.AlertType.ERROR);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Platform.runLater(() -> {
+                            showAlert("Error", "Connection error: " + t.getMessage(), Alert.AlertType.ERROR);
+                        });
+                        t.printStackTrace();
                     }
                 });
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
             }
         });
     }
@@ -409,6 +461,7 @@ public class ExpenseController {
     @FXML
     private void handleRefresh() {
         loadExpenses();
+        showAlert("Info", "List updated", Alert.AlertType.INFORMATION);
     }
 
     @FXML
@@ -434,41 +487,75 @@ public class ExpenseController {
         Button btn_del = new Button("Delete");
 
         btn_add.setOnAction(e -> {
+            String categoryName = txt_category_name.getText().trim();
+            if (categoryName.isEmpty()) {
+                showAlert("Error", "Category name cannot be empty", Alert.AlertType.ERROR);
+                return;
+            }
+
             String token = "Bearer " + TokenManager.getToken();
             RetrofitClient.getApiService()
-                    .createExpenseCategory(token, new ExpenseCategoryCreate(txt_category_name.getText()))
+                    .createExpenseCategory(token, new ExpenseCategoryCreate(categoryName))
                     .enqueue(new Callback<ExpenseCategory>() {
                         @Override
                         public void onResponse(Call<ExpenseCategory> call, Response<ExpenseCategory> response) {
-                            if (response.isSuccessful())
-                                Platform.runLater(() -> {
-                                    loadCategories();
+                            Platform.runLater(() -> {
+                                if (response.isSuccessful()) {
+                                    showAlert("Success", "Category created successfully", Alert.AlertType.INFORMATION);
                                     txt_category_name.clear();
-                                });
+                                    loadCategories();
+                                } else {
+                                    showAlert("Error", "Could not create category", Alert.AlertType.ERROR);
+                                }
+                            });
                         }
 
                         @Override
                         public void onFailure(Call<ExpenseCategory> call, Throwable t) {
+                            Platform.runLater(() -> {
+                                showAlert("Error", "Connection error: " + t.getMessage(), Alert.AlertType.ERROR);
+                            });
                         }
                     });
         });
 
         btn_del.setOnAction(e -> {
-            ExpenseCategory s = category_listview.getSelectionModel().getSelectedItem();
-            if (s != null) {
-                String token = "Bearer " + TokenManager.getToken();
-                RetrofitClient.getApiService().deleteExpenseCategory(token, s.getId()).enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.isSuccessful())
-                            Platform.runLater(() -> loadCategories());
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                    }
-                });
+            ExpenseCategory selected = category_listview.getSelectionModel().getSelectedItem();
+            if (selected == null) {
+                showAlert("Warning", "Select a category to delete", Alert.AlertType.WARNING);
+                return;
             }
+
+            Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmation.setTitle("Confirm deletion");
+            confirmation.setHeaderText("Are you sure you want to delete this category?");
+            confirmation.setContentText("Category: " + selected.getCategory());
+
+            confirmation.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    String token = "Bearer " + TokenManager.getToken();
+                    RetrofitClient.getApiService().deleteExpenseCategory(token, selected.getId()).enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            Platform.runLater(() -> {
+                                if (response.isSuccessful()) {
+                                    showAlert("Success", "Category deleted successfully", Alert.AlertType.INFORMATION);
+                                    loadCategories();
+                                } else {
+                                    showAlert("Error", "Could not delete. May have expenses associated", Alert.AlertType.ERROR);
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Platform.runLater(() -> {
+                                showAlert("Error", "Connection error: " + t.getMessage(), Alert.AlertType.ERROR);
+                            });
+                        }
+                    });
+                }
+            });
         });
 
         VBox v = new VBox(10, new Label("Categories"), category_listview, txt_category_name,
@@ -481,7 +568,8 @@ public class ExpenseController {
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
+        alert.setHeaderText(null);
         alert.setContentText(message);
-        alert.show();
+        alert.showAndWait();
     }
 }

@@ -13,7 +13,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-
 // Models and services
 import models.user.User;
 import models.user.UserCreate;
@@ -94,8 +93,7 @@ public class UserController {
         ObservableList<Rol> roles = FXCollections.observableArrayList(
                 new Rol(1, "Employee"),
                 new Rol(2, "Supervisor"),
-                new Rol(3, "Admin")
-        );
+                new Rol(3, "Admin"));
         cmb_role_id.setItems(roles);
 
         // Configure table columns
@@ -128,10 +126,14 @@ public class UserController {
      */
     private String getRoleName(int role_id) {
         switch (role_id) {
-            case 1: return "Employee";
-            case 2: return "Supervisor";
-            case 3: return "Admin";
-            default: return "Unknown";
+            case 1:
+                return "Employee";
+            case 2:
+                return "Supervisor";
+            case 3:
+                return "Admin";
+            default:
+                return "Unknown";
         }
     }
 
@@ -203,7 +205,6 @@ public class UserController {
 
         UserCreate newUser = new UserCreate(username, password, role_id);
 
-
         Call<Void> call = RetrofitClient.getApiService().createUser(token, newUser);
 
         call.enqueue(new Callback<Void>() {
@@ -243,7 +244,6 @@ public class UserController {
     private void handleUpdate() {
         User selected_user = table_users.getSelectionModel().getSelectedItem();
 
-
         if (selected_user == null) {
             showAlert("Warning", "Select a user from the table", Alert.AlertType.WARNING);
             return;
@@ -262,8 +262,7 @@ public class UserController {
         ObservableList<Rol> roles = FXCollections.observableArrayList(
                 new Rol(1, "Employee"),
                 new Rol(2, "Supervisor"),
-                new Rol(3, "Admin")
-        );
+                new Rol(3, "Admin"));
         cmb_new_role_id.setItems(roles);
 
         // Select current user role
@@ -304,9 +303,9 @@ public class UserController {
                 UserUpdate updatedUser = new UserUpdate(new_username, new_role_id);
 
                 Call<Void> call = RetrofitClient.getApiService().updateUser(
+                        token,
                         selected_user.getId(),
-                        updatedUser
-                );
+                        updatedUser);
 
                 call.enqueue(new Callback<Void>() {
                     @Override
