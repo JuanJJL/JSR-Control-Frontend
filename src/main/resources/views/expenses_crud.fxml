@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="700.0" prefWidth="1100.0"
+            xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.ExpenseController">
+
+    <!-- TOP BAR -->
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0"
+              style="-fx-background-color: #a9cec2;"
+              BorderPane.alignment="CENTER">
+            <children>
+                <Label text="EXPENSE MANAGEMENT SYSTEM"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;">
+                    <HBox.margin>
+                        <Insets left="15.0" />
+                    </HBox.margin>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="btn_back" mnemonicParsing="false" text="BACK"
+                        onAction="#handleBack"
+                        style="-fx-background-color: #2F4F4F; -fx-text-fill: white; -fx-padding: 5 15 5 15;">
+                    <HBox.margin>
+                        <Insets right="15.0" />
+                    </HBox.margin>
+                </Button>
+            </children>
+        </HBox>
+    </top>
+
+    <!-- CENTER CONTENT -->
+    <center>
+        <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #2F3640;">
+
+            <!-- LEFT PANEL: FORM -->
+            <VBox prefWidth="350.0" minWidth="350.0" style="-fx-background-color: #3B444C;">
+                <padding>
+                    <Insets bottom="20.0" left="25.0" right="25.0" top="20.0" />
+                </padding>
+
+                <Label text="+ ADD NEW EXPENSE"
+                       style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #A9B7C6;"/>
+                <Separator style="-fx-background-color: #6C7A89;">
+                    <VBox.margin>
+                        <Insets top="5.0" bottom="15.0"/>
+                    </VBox.margin>
+                </Separator>
+
+                <!-- Description -->
+                <Label text="Description:" style="-fx-text-fill: #A9B7C6;"/>
+                <TextField fx:id="txt_description" promptText="Enter expense description"
+                           style="-fx-background-color: #555E67; -fx-text-fill: white; -fx-prompt-text-fill: #9AA7B7;"/>
+
+                <!-- Amount -->
+                <Label text="Amount:" style="-fx-text-fill: #A9B7C6;">
+                    <VBox.margin><Insets top="10.0"/></VBox.margin>
+                </Label>
+                <TextField fx:id="txt_amount" promptText="Enter amount"
+                           style="-fx-background-color: #555E67; -fx-text-fill: white; -fx-prompt-text-fill: #9AA7B7;"/>
+
+                <!-- Category -->
+                <Label text="Category:" style="-fx-text-fill: #A9B7C6;">
+                    <VBox.margin><Insets top="10.0"/></VBox.margin>
+                </Label>
+                <ComboBox fx:id="cmb_category" prefWidth="300.0" promptText="Select category"
+                          style="-fx-background-color: #555E67; -fx-prompt-text-fill: #9AA7B7;"/>
+
+                <!-- Payment Method -->
+                <Label text="Payment Method:" style="-fx-text-fill: #A9B7C6;">
+                    <VBox.margin><Insets top="10.0"/></VBox.margin>
+                </Label>
+                <ComboBox fx:id="cmb_payment_method" prefWidth="300.0" promptText="Select method"
+                          style="-fx-background-color: #555E67; -fx-prompt-text-fill: #9AA7B7;"/>
+                          
+                 <!-- Responsible -->
+                <Label text="Responsible User:" style="-fx-text-fill: #A9B7C6;">
+                    <VBox.margin><Insets top="10.0"/></VBox.margin>
+                </Label>
+                <ComboBox fx:id="cmb_responsible" prefWidth="300.0" promptText="Select responsible"
+                          style="-fx-background-color: #555E67; -fx-prompt-text-fill: #9AA7B7;"/>
+                          
+                <!-- Reviewed Checkbox -->
+                 <CheckBox fx:id="chk_reviewed" text="Is Reviewed?" textFill="#A9B7C6">
+                    <VBox.margin><Insets top="15.0"/></VBox.margin>
+                 </CheckBox>
+
+                <Region VBox.vgrow="ALWAYS" />
+
+                <!-- Create Button -->
+                <Button fx:id="btn_create" mnemonicParsing="false" text="REGISTER EXPENSE"
+                        onAction="#handleCreateExpense" prefWidth="300.0"
+                        style="-fx-background-color: #008B8B; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;">
+                    <VBox.margin><Insets top="20.0"/></VBox.margin>
+                </Button>
+                
+                 <!-- Manage Categories Button -->
+                <Button fx:id="btn_manage_categories" mnemonicParsing="false" text="MANAGE CATEGORIES"
+                        onAction="#handleManageCategories" prefWidth="300.0"
+                        style="-fx-background-color: #6C7A89; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12px;">
+                    <VBox.margin><Insets top="10.0"/></VBox.margin>
+                </Button>
+
+
+                <!-- Clear Button -->
+                <Button fx:id="btn_clear" mnemonicParsing="false" text="CLEAR FORM"
+                        onAction="#handleClear" prefWidth="300.0"
+                        style="-fx-background-color: #6C7A89; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 12px;">
+                    <VBox.margin><Insets top="10.0"/></VBox.margin>
+                </Button>
+            </VBox>
+
+            <!-- RIGHT PANEL: TABLE -->
+            <VBox HBox.hgrow="ALWAYS">
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+
+                <Label text="EXPENSES LIST"
+                       style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #A9B7C6;"/>
+                <Separator style="-fx-background-color: #6C7A89;">
+                    <VBox.margin>
+                        <Insets top="5.0" bottom="15.0"/>
+                    </VBox.margin>
+                </Separator>
+
+                <TableView fx:id="table_expenses" VBox.vgrow="ALWAYS"
+                           style="-fx-background-color: #3B444C;">
+                    <columns>
+                        <TableColumn fx:id="col_id" text="ID" prefWidth="40.0" />
+                        <TableColumn fx:id="col_description" text="Description" prefWidth="180.0" />
+                        <TableColumn fx:id="col_amount" text="Amount" prefWidth="80.0" />
+                        <TableColumn fx:id="col_category" text="Category" prefWidth="100.0" />
+                        <TableColumn fx:id="col_payment_method" text="Pay Method" prefWidth="100.0" />
+                        <TableColumn fx:id="col_responsible" text="Responsible" prefWidth="100.0" />
+                        <TableColumn fx:id="col_reviewed" text="Reviewed" prefWidth="70.0" />
+                        <TableColumn fx:id="col_created_at" text="Date" prefWidth="120.0" />
+                    </columns>
+                </TableView>
+
+                <!-- Action Buttons -->
+                <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                    <VBox.margin><Insets top="15.0"/></VBox.margin>
+                    <Button fx:id="btn_update" mnemonicParsing="false" text="UPDATE"
+                            onAction="#handleUpdate"
+                            style="-fx-background-color: #79A3A8; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <Button fx:id="btn_delete" mnemonicParsing="false" text="DELETE"
+                            onAction="#handleDelete"
+                            style="-fx-background-color: #CD5C5C; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <Button fx:id="btn_refresh" mnemonicParsing="false" text="REFRESH LIST"
+                            onAction="#handleRefresh"
+                            style="-fx-background-color: #6C7A89; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                </HBox>
+            </VBox>
+        </HBox>
+    </center>
+</BorderPane>

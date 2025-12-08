@@ -16,7 +16,7 @@ public class Main extends Application {
 
         // Configurar la ventana
         primaryStage.setTitle("Login - Sistema de Usuarios");
-        primaryStage.setScene(new Scene(root, 400, 300));
+        primaryStage.setScene(new Scene(root, 600, 450));
         primaryStage.show();
     }
 

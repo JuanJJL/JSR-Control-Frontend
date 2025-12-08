@@ -30,6 +30,9 @@ public class MainMenuController {
     private Button ventas_button;
 
     @FXML
+    private Button expenses_button;
+
+    @FXML
     public void initialize() {
         // Show logged in user
         if (TokenManager.isLoggedIn()) {
@@ -55,6 +58,11 @@ public class MainMenuController {
     @FXML
     private void openProducts() {
         changeView("/views/product_crud.fxml", "Gestión de Productos", 1000, 650);
+    }
+
+    @FXML
+    private void openExpenses() {
+        changeView("/views/expenses_crud.fxml", "Gestión de Gastos", 1100, 700);
     }
 
     @FXML

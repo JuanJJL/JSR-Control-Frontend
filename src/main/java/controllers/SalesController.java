@@ -527,13 +527,12 @@ public class SalesController {
     @FXML
     private void handleBack() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main_menu.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) btn_back.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(new Scene(root, 1200, 700));
             stage.setTitle("Main Menu");
-            stage.show();
         } catch (Exception e) {
             e.printStackTrace();
             showAlert("Error", "Could not load main menu", Alert.AlertType.ERROR);

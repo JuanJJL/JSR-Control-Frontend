@@ -1,15 +1,12 @@
-package models.products;
+package models.expenses;
 
-public class ProductCategoryCreate {
-    // DTO for creating a category
+public class ExpenseCategoryCreate {
     private String category;
 
-    // Constructor
-    public ProductCategoryCreate(String category) {
+    public ExpenseCategoryCreate(String category) {
         this.category = category;
     }
 
-    // Getters y Setters
     public String getCategory() {
         return category;
     }

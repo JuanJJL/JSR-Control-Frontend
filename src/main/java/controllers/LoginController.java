@@ -19,95 +19,87 @@ import utils.TokenManager;
 
 public class LoginController {
 
+    @FXML
+    private TextField username_field;
 
-        @FXML
-        private TextField username_field;
+    @FXML
+    private PasswordField password_field;
 
-        @FXML
-        private PasswordField password_field;
+    @FXML
+    private void handleLogin() {
 
+        String username = username_field.getText();
+        String password = password_field.getText();
 
-        @FXML
-        private void handleLogin() {
+        if (username.isEmpty() || password.isEmpty()) {
+            showAlert("Error", "Por favor ingresa usuario y contraseña", Alert.AlertType.ERROR);
+            return;
+        }
 
-            String username = username_field.getText();
-            String password = password_field.getText();
+        LoginRequest request = new LoginRequest(username, password);
 
+        Call<TokenResponse> call = RetrofitClient.getApiService().login(request);
 
-            if (username.isEmpty() || password.isEmpty()) {
-                showAlert("Error", "Por favor ingresa usuario y contraseña", Alert.AlertType.ERROR);
-                return;
+        call.enqueue(new Callback<TokenResponse>() {
+            @Override
+            public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
+
+                if (response.isSuccessful() && response.body() != null) {
+                    // Login exitoso
+                    TokenResponse token = response.body();
+
+                    // Guardar el token
+                    TokenManager.setToken(token.getAccess_token());
+                    // Por ahora guardamos datos placeholder o decodificamos si es JWT
+                    // Como TokenResponse ahora solo tiene token, tipo y rol
+                    TokenManager.setUserInfo(0, username, token.getRole_id());
+
+                    System.out.println("Login exitoso!");
+                    System.out.println("Token: " + token.getAccess_token());
+
+                    // Mostrar mensaje de éxito
+                    Platform.runLater(() -> {
+                        showAlert("Éxito", "Login exitoso!", Alert.AlertType.INFORMATION);
+
+                        // Cambiar a la pantalla de CRUD
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main_menu.fxml"));
+                            Parent root = loader.load();
+
+                            Stage stage = (Stage) username_field.getScene().getWindow();
+                            stage.setScene(new Scene(root, 900, 600));
+                            stage.setTitle("Gestión de Usuarios");
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            showAlert("Error", "No se pudo cargar la pantalla de usuarios", Alert.AlertType.ERROR);
+                        }
+                    });
+
+                } else {
+                    // Login fallido (401, 400, etc.)
+                    Platform.runLater(() -> {
+                        showAlert("Error", "Usuario o contraseña incorrectos", Alert.AlertType.ERROR);
+                    });
+                }
             }
 
+            @Override
+            public void onFailure(Call<TokenResponse> call, Throwable t) {
 
-            LoginRequest request = new LoginRequest(username, password);
-
-
-            Call<TokenResponse> call = RetrofitClient.getApiService().login(request);
-
-
-            call.enqueue(new Callback<TokenResponse>() {
-                @Override
-                public void onResponse(Call<TokenResponse> call, Response<TokenResponse> response) {
-
-
-                    if (response.isSuccessful() && response.body() != null) {
-                        // Login exitoso
-                        TokenResponse token = response.body();
-
-                        // Guardar el token
-                        TokenManager.setToken(token.getAccess_token());
-
-                        System.out.println("Login exitoso!");
-                        System.out.println("Token: " + token.getAccess_token());
-
-                        // Mostrar mensaje de éxito
-                        Platform.runLater(() -> {
-                            showAlert("Éxito", "Login exitoso!", Alert.AlertType.INFORMATION);
-
-                            // Cambiar a la pantalla de CRUD
-                            try {
-                                FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/main_menu.fxml"));
-                                Parent root = loader.load();
-
-                                Stage stage = (Stage) username_field.getScene().getWindow();
-                                stage.setScene(new Scene(root, 900, 600));
-                                stage.setTitle("Gestión de Usuarios");
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                showAlert("Error", "No se pudo cargar la pantalla de usuarios", Alert.AlertType.ERROR);
-                            }
-                        });
-
-                    } else {
-                        // Login fallido (401, 400, etc.)
-                        Platform.runLater(() -> {
-                            showAlert("Error", "Usuario o contraseña incorrectos", Alert.AlertType.ERROR);
-                        });
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<TokenResponse> call, Throwable t) {
-
-                    Platform.runLater(() -> {
-                        showAlert("Error", "Error de conexión: " + t.getMessage(), Alert.AlertType.ERROR);
-                    });
-                    t.printStackTrace();
-                }
-            });
-        }
-
-
-        private void showAlert(String title, String message, Alert.AlertType type) {
-            Alert alert = new Alert(type);
-            alert.setTitle(title);
-            alert.setHeaderText(null);
-            alert.setContentText(message);
-            alert.showAndWait();
-        }
+                Platform.runLater(() -> {
+                    showAlert("Error", "Error de conexión: " + t.getMessage(), Alert.AlertType.ERROR);
+                });
+                t.printStackTrace();
+            }
+        });
     }
 
-
-
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+}

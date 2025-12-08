@@ -87,6 +87,17 @@
                             prefWidth="200"/>
                 </VBox>
 
+                <!-- Botón Gastos -->
+                <VBox alignment="CENTER" spacing="10"
+                      style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 40; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 5);"
+                      GridPane.columnIndex="0" GridPane.rowIndex="2">
+
+                    <Label text="💸" style="-fx-font-size: 48;"/>
+                    <Button fx:id="expenses_button" text="Registro de Gastos" onAction="#openExpenses"
+                            style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 15 30; -fx-font-size: 14;"
+                            prefWidth="200"/>
+                </VBox>
+
             </GridPane>
 
         </VBox>
