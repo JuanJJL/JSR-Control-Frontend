@@ -1,8 +1,9 @@
 package models;
 
 public class TokenResponse {
-    private  String access_token;
-    private  String token_type;
+    private String access_token;
+    private String token_type;
+    private int role_id;
 
     public TokenResponse() {}
 
@@ -22,8 +23,20 @@ public class TokenResponse {
         this.token_type = token_type;
     }
 
+    public int getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(int role_id) {
+        this.role_id = role_id;
+    }
+
     @Override
     public String toString(){
-        return "TokenResponse{" + "access_token='" + access_token + '\'' + ", token_type='" + token_type + '\'' + '}';
+        return "TokenResponse{" +
+                "access_token='" + access_token + '\'' +
+                ", token_type='" + token_type + '\'' +
+                ", role_id=" + role_id +
+                '}';
     }
 }

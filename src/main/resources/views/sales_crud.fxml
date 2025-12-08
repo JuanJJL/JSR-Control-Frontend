@@ -13,7 +13,7 @@
     <!-- TOP BAR -->
     <top>
         <HBox alignment="CENTER_LEFT" prefHeight="40.0"
-              style="-fx-background-color: #4CAF50;"
+              style="-fx-background-color: #a9cec2;"
               BorderPane.alignment="CENTER">
             <children>
                 <Label text="SALES REGISTRATION SYSTEM"

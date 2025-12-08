@@ -7,7 +7,7 @@
 
 <BorderPane prefHeight="650.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.UserController">
     <top>
-        <HBox alignment="CENTER_LEFT" prefHeight="40.0" style="-fx-background-color: #4CAF50;" BorderPane.alignment="CENTER">
+        <HBox alignment="CENTER_LEFT" prefHeight="40.0" style="-fx-background-color: #a9cec2;" BorderPane.alignment="CENTER">
             <children>
                 <Label text="USER MANAGEMENT SYSTEM" style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;">
                     <HBox.margin>
